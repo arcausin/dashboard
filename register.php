@@ -35,7 +35,42 @@
                     <div class="col-lg-7">
                         <div class="p-5">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Créer un compte !</h1>
+                                <?php if (isset($_GET['prenom'])): ?>
+                                    <div class="alert alert-danger alert-dismissible fade show">
+                                        <strong>Erreur !</strong> Veuillez entrer votre prénom
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    </div>
+
+                                <?php elseif(isset($_GET['nom'])): ?>
+                                    <div class="alert alert-danger alert-dismissible fade show">
+                                        <strong>Erreur !</strong> Veuillez entrer votre nom
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    </div>
+
+                                <?php elseif(isset($_GET['mailAdress'])): ?>
+                                    <div class="alert alert-danger alert-dismissible fade show">
+                                        <strong>Erreur !</strong> Veuillez entrer votre adresse mail
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    </div>
+
+                                <?php elseif(isset($_GET['password'])): ?>
+                                    <div class="alert alert-danger alert-dismissible fade show">
+                                        <strong>Erreur !</strong> Veuillez entrer votre mot de passe
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    </div>
+
+                                <?php elseif(isset($_GET['passwordConfirm'])): ?>
+                                    <div class="alert alert-danger alert-dismissible fade show">
+                                        <strong>Erreur !</strong> Veuillez confirmer votre mot de passe
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    </div>
+                                <?php elseif(isset($_GET['passwordPasswordConfirm'])): ?>
+                                    <div class="alert alert-danger alert-dismissible fade show">
+                                        <strong>Erreur !</strong> Les mots de passe ne correspondent pas
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    </div>
+                                <?php endif; ?>
+                                <h1 class="h4 text-gray-900 mb-4">Créer un compte</h1>
                             </div>
                             <form class="user" action="register-processing.php" method="post">
                                 <div class="form-group row">
@@ -49,8 +84,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <input type="email" name="mailAdress" class="form-control form-control-user" id="exampleInputEmail"
-                                        placeholder="Adresse Mail">
+                                    <input type="email" name="mailAdress" class="form-control form-control-user" id="exampleMailAdress"
+                                        placeholder="Adresse mail">
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
@@ -66,10 +101,7 @@
                             </form>
                             <hr>
                             <div class="text-center">
-                                <a class="small" href="forgot-password.php">Mot de passe oublié ?</a>
-                            </div>
-                            <div class="text-center">
-                                <a class="small" href="login.php">Vous avez déjà un compte ? Connexion !</a>
+                                <a class="small" href="login.php">Connexion !</a>
                             </div>
                         </div>
                     </div>
