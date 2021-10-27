@@ -13,7 +13,7 @@ require_once($_SERVER['DOCUMENT_ROOT']."/include/security.php");
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title><?php echo $user['firstName'] . " " . $user['lastName']?> - Notes</title>
+    <title><?php echo $user['firstName'] . " " . $user['lastName'] ?> - Notes</title>
 
     <!-- Custom fonts and styles for this template-->
     <?php require_once($_SERVER['DOCUMENT_ROOT']."/include/css.php"); ?>
@@ -42,9 +42,72 @@ require_once($_SERVER['DOCUMENT_ROOT']."/include/security.php");
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <!-- Page Heading -->
-                    <h1 class="h3 mb-4 text-gray-800">Notes</h1>
+                  <!-- Page Heading -->
+                  <div class="row">
+                    <div class="col-lg-12 d-flex justify-content-between mb-4">
+                      <h1 class="h3 text-gray-800">Notes</h1>
+                      <button type="button" class="btn btn-success float-right">Ajouter</button>
+                    </div>
+                  </div>
+                  <p class="mb-4 text-justify">Suspendisse finibus tortor eget tempus facilisis. Duis maximus convallis urna, et gravida felis elementum ut. Fusce maximus nisl non auctor ultricies. Nullam nec pharetra felis. Etiam pulvinar tortor eu luctus viverra. Vivamus consequat mi at diam aliquam ornare. Etiam suscipit erat vitae scelerisque varius. Donec facilisis sit amet leo id fringilla. Suspendisse luctus arcu nibh, a lobortis nisl tristique non.</p>
 
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="row">
+
+                      <?php
+                      $req = $conn->prepare('SELECT id, idUser, title, description, illustration, favori, creationDate FROM note WHERE idUser = ? ORDER BY creationDate DESC');
+                      $req->execute(array($_SESSION['id']));
+
+                      while ($note = $req->fetch()) {
+                        ?>
+                        <div class="col-lg-6">
+                          <!-- Dropdown Card Example -->
+                          <div class="card shadow mb-4">
+                              <!-- Card Header - Dropdown -->
+                              <div
+                                  class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                  <h6 class="m-0 font-weight-bold text-primary"><?php echo $note['title'] ?></h6>
+                                  <div class="dropdown no-arrow">
+                                      <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                          <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                      </a>
+                                      <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                          aria-labelledby="dropdownMenuLink">
+                                          <a class="dropdown-item" href="#">Modifier</a>
+                                          <a class="dropdown-item" href="#">Supprimer</a>
+                                          <div class="dropdown-divider"></div>
+                                          <?php
+                                          if ($note['favori'] == FALSE) {
+                                            ?>
+                                            <a class="dropdown-item" href="#">Ajouter aux favoris</a>
+                                            <?php
+                                          }
+                                          else {
+                                            ?>
+                                            <a class="dropdown-item" href="#">Enlever des favoris</a>
+                                            <?php
+                                          }
+                                          ?>
+
+                                      </div>
+                                  </div>
+                              </div>
+                              <!-- Card Body -->
+                              <div class="card-body"><?php echo $note['description'] ?></div>
+                          </div>
+                        </div>
+                        <?php
+                      }
+                      $req->closeCursor();
+                      ?>
+
+
+
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <!-- /.container-fluid -->
 

@@ -4,3 +4,4 @@
     rel="stylesheet">
 
 <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<link rel="icon" href="/img/undraw_profile.svg"/>
