@@ -1,6 +1,6 @@
 <?php
+require_once($_SERVER['DOCUMENT_ROOT']."/include/database-connexion.php");
 session_start();
-require_once("include/database-connexion.php");
 if (!empty($_SESSION['id'])) {
   header('Location: index.php');
   exit();

@@ -1,4 +1,5 @@
-<?php require_once("include/database-connexion.php");
+<?php
+require_once($_SERVER['DOCUMENT_ROOT']."/include/database-connexion.php");
 
 if (isset($_POST['submit'])) { // bouton submit appuyé
   if (empty($_POST['firstName'])) { // champ Prénom vide
