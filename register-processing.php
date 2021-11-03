@@ -1,16 +1,21 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT']."/include/database-connexion.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/include/key-register.php");
 
 if (isset($_POST['submit'])) { // bouton submit appuyé
   if (empty($_POST['firstName'])) { // champ Prénom vide
-    header('Location: register.php?prenom');
+    header('Location: register.php?firstName');
     exit();
   } elseif (empty($_POST['lastName'])) { // champ Nom vide
-    header('Location: register.php?nom');
+    header('Location: register.php?lastName');
     exit();
   } elseif (empty($_POST['mailAdress'])) { // champ Adresse Mail vide
     // veuillez remplir le champ Adresse Mail
     header('Location: register.php?mailAdress');
+    exit();
+  } elseif ($_POST['keyRegister'] != $keyRegister) { // champ Clé d'Inscription invalide
+    // La clé d'inscription est invalide
+    header('Location: register.php?keyRegister');
     exit();
   } elseif (empty($_POST['password'])) { // champ Mot de passe vide
     // veuillez remplir le champ Mot de passe

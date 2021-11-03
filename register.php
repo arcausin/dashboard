@@ -53,6 +53,12 @@
                                         <button type="button" class="close" data-dismiss="alert">&times;</button>
                                     </div>
 
+                                <?php elseif(isset($_GET['keyRegister'])): ?>
+                                    <div class="alert alert-danger alert-dismissible fade show">
+                                        <strong>Erreur !</strong> La clé d'inscription est invalide
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    </div>
+
                                 <?php elseif(isset($_GET['password'])): ?>
                                     <div class="alert alert-danger alert-dismissible fade show">
                                         <strong>Erreur !</strong> Veuillez entrer votre mot de passe
@@ -83,9 +89,13 @@
                                             placeholder="Nom">
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <input type="email" name="mailAdress" class="form-control form-control-user" id="exampleMailAdress"
-                                        placeholder="Adresse mail">
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="email" name="mailAdress" class="form-control form-control-user" id="exampleMailAdress" placeholder="Adresse mail">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="text" name="keyRegister" class="form-control form-control-user" id="examplekeyRegister" placeholder="Clé d'inscription">
+                                    </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
