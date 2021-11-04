@@ -4,7 +4,7 @@ if (empty($_SESSION['id'])) {
   header('Location: /login.php');
   exit();
 }
-$req = $conn->prepare('SELECT id, firstName, lastName, mailAdress, creationDate FROM user WHERE id = ?');
+$req = $conn_dashboard->prepare('SELECT id, firstName, lastName, mailAdress, creationDate FROM user WHERE id = ?');
 $req->execute(array($_SESSION['id']));
 $user = $req->fetch();
 ?>

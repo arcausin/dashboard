@@ -14,7 +14,7 @@ if (isset($_POST['updateSubmit'])) {
     exit();
   }
   else {
-    $req = $conn->prepare('UPDATE note SET title = ?, description = ? WHERE id = ?');
+    $req = $conn_dashboard->prepare('UPDATE note SET title = ?, description = ? WHERE id = ?');
     $req->execute(array($_POST['title'], $_POST['description'], $_POST['updateId']));
     header('Location: /notes/');
     exit();

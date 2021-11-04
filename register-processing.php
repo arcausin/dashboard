@@ -33,7 +33,7 @@ if (isset($_POST['submit'])) { // bouton submit appuyé
   else { // toutes les données du formulaires sont correctes
     $passwordHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-    $req = $conn->prepare('INSERT INTO user (firstName, lastName, mailAdress, password, creationDate) VALUES (:firstName, :lastName, :mailAdress, :password, now())');
+    $req = $conn_dashboard->prepare('INSERT INTO user (firstName, lastName, mailAdress, password, creationDate) VALUES (:firstName, :lastName, :mailAdress, :password, now())');
     $req->execute(array(
       'firstName' => $_POST['firstName'],
       'lastName' => $_POST['lastName'],

@@ -17,7 +17,7 @@ if (isset($_POST['submit'])) { // bouton submit appuyé
     exit();
   }
   else { // toutes les données du formulaires sont remplis
-    $req = $conn->prepare('SELECT * FROM user WHERE mailAdress = ?');
+    $req = $conn_dashboard->prepare('SELECT * FROM user WHERE mailAdress = ?');
     $req->execute(array($_POST['mailAdress']));
     $user = $req->fetch();
 

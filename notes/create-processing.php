@@ -11,7 +11,7 @@ if (isset($_POST['createSubmit'])) {
     exit();
   }
   else {
-    $req = $conn->prepare('INSERT INTO note (idUser, title, description, creationDate) VALUES(:idUser, :title, :description, NOW())');
+    $req = $conn_dashboard->prepare('INSERT INTO note (idUser, title, description, creationDate) VALUES(:idUser, :title, :description, NOW())');
     $req->execute(array(
         'idUser' => $user['id'],
         'title' => $_POST['title'],

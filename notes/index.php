@@ -56,7 +56,7 @@ require_once($_SERVER['DOCUMENT_ROOT']."/include/security.php");
                       <div class="row">
 
                       <?php
-                      $req = $conn->prepare('SELECT id, idUser, title, description, illustration, favorite, creationDate FROM note WHERE idUser = ? ORDER BY creationDate DESC');
+                      $req = $conn_dashboard->prepare('SELECT id, idUser, title, description, illustration, favorite, creationDate FROM note WHERE idUser = ? ORDER BY creationDate DESC');
                       $req->execute(array($_SESSION['id']));
 
                       while ($note = $req->fetch()) {
@@ -126,7 +126,7 @@ require_once($_SERVER['DOCUMENT_ROOT']."/include/security.php");
                       <?php
                       if (isset($_POST['updateSubmit'])) {
 
-                        $reqUpdate = $conn->prepare('SELECT id, idUser, title, description, illustration, favorite, creationDate FROM note WHERE id = ?');
+                        $reqUpdate = $conn_dashboard->prepare('SELECT id, idUser, title, description, illustration, favorite, creationDate FROM note WHERE id = ?');
                         $reqUpdate->execute(array($_POST['updateId']));
                         $noteUpdate = $reqUpdate->fetch()
                         ?>
@@ -167,7 +167,7 @@ require_once($_SERVER['DOCUMENT_ROOT']."/include/security.php");
                       <?php
                       if (isset($_POST['deleteSubmit'])) {
 
-                        $reqDelete = $conn->prepare('SELECT id, title, description, illustration FROM note WHERE id = ?');
+                        $reqDelete = $conn_dashboard->prepare('SELECT id, title, description, illustration FROM note WHERE id = ?');
                         $reqDelete->execute(array($_POST['deleteId']));
                         $noteDelete = $reqDelete->fetch()
                         ?>
