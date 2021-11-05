@@ -2,7 +2,7 @@
 require_once($_SERVER['DOCUMENT_ROOT']."/include/database-connexion.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/include/key-register.php");
 
-$reqcreateUser = $conn_dashboard->prepare('SELECT mailAdress FROM note WHERE mailAdress = ?');
+$reqcreateUser = $conn_dashboard->prepare('SELECT mailAdress FROM user WHERE mailAdress = ?');
 $reqcreateUser->execute(array($_POST['mailAdress']));
 
 if (isset($_POST['submit'])) { // bouton submit appuyé
