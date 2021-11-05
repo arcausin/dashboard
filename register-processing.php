@@ -2,6 +2,9 @@
 require_once($_SERVER['DOCUMENT_ROOT']."/include/database-connexion.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/include/key-register.php");
 
+$reqcreateUser = $conn_dashboard->prepare('SELECT mailAdress FROM note WHERE mailAdress = ?');
+$reqcreateUser->execute(array($_POST['mailAdress']));
+
 if (isset($_POST['submit'])) { // bouton submit appuyé
   if (empty($_POST['firstName'])) { // champ Prénom vide
     header('Location: register.php?firstName');
@@ -28,6 +31,9 @@ if (isset($_POST['submit'])) { // bouton submit appuyé
   } elseif ($_POST['password'] != $_POST['passwordConfirm']) { // champ Mot de passe et Confirmer le mot de passe différent
     // les Mots de passe ne correspondent pas
     header('Location: register.php?passwordPasswordConfirm');
+    exit();
+  } elseif ($reqcreateUser->rowCount() != 0) {
+    header('Location: register.php?mailAdressKnown');
     exit();
   }
   else { // toutes les données du formulaires sont correctes

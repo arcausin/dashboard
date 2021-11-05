@@ -53,6 +53,12 @@
                                         <button type="button" class="close" data-dismiss="alert">&times;</button>
                                     </div>
 
+                                <?php elseif(isset($_GET['mailAdressKnown'])): ?>
+                                    <div class="alert alert-danger alert-dismissible fade show">
+                                        <strong>Erreur !</strong> Cette adresse mail est déjà utilisée
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    </div>
+
                                 <?php elseif(isset($_GET['keyRegister'])): ?>
                                     <div class="alert alert-danger alert-dismissible fade show">
                                         <strong>Erreur !</strong> La clé d'inscription est invalide
