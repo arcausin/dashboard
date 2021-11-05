@@ -47,6 +47,24 @@ if (!empty($_SESSION['id'])) {
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
+                                      <?php if (isset($_GET['mailAdress'])): ?>
+                                          <div class="alert alert-danger alert-dismissible fade show">
+                                              <strong>Erreur !</strong> Veuillez entrer votre adresse mail
+                                              <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                          </div>
+
+                                      <?php elseif(isset($_GET['password'])): ?>
+                                          <div class="alert alert-danger alert-dismissible fade show">
+                                              <strong>Erreur !</strong> Veuillez entrer votre mot de passe
+                                              <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                          </div>
+
+                                        <?php elseif(isset($_GET['invalid'])): ?>
+                                            <div class="alert alert-danger alert-dismissible fade show">
+                                                <strong>Erreur !</strong> L'adresse mail ou le mot de passe est invalide
+                                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                            </div>
+                                        <?php endif; ?>
                                         <h1 class="h4 text-gray-900 mb-4">Connexion</h1>
                                     </div>
                                     <form class="user" action="login-processing.php" method="post">
