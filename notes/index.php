@@ -102,14 +102,14 @@ require_once($_SERVER['DOCUMENT_ROOT']."/include/security.php");
                               <!-- Card Body -->
                               <div class="card-body">
                                 <div class="row">
-                                  <div class="col-lg-<?php if (!empty($note['illustration'])) { echo "8"; } else { echo "12"; } ?> mb-3">
+                                  <div class="col-lg-<?php if (!empty($note['illustration'])) { if (strlen($note['description']) < 750) { echo "8"; } else { echo "12"; } } else { echo "12"; } ?> mb-3">
                                     <?php echo nl2br(htmlspecialchars($note['description'])); ?>
                                   </div>
                                   <?php if (!empty($note['illustration'])) { ?>
-                                    <div class="col-lg-4 d-flex justify-content-center align-items-center">
-                                      <img class="img-fluid rounded" src="/img/<?php echo $note['illustration'] ?>" style="max-height: 15rem;">
-                                    </div>
-                                    <?php } ?>
+                                  <div class="col-lg-<?php if (!empty($note['illustration'])) { if (strlen($note['description']) < 750) { echo "4"; } else { echo "12"; } } else { echo "12"; } ?> d-flex justify-content-center align-items-center">
+                                    <img class="img-fluid rounded" src="/img/notes/<?php echo $note['illustration'] ?>" style="max-height: 15rem;">
+                                  </div>
+                                  <?php } ?>
                                 </div>
                               </div>
 
@@ -133,7 +133,7 @@ require_once($_SERVER['DOCUMENT_ROOT']."/include/security.php");
                         <!-- Modal Update -->
                         <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                           <div class="modal-dialog modal-lg" role="document">
-                            <form action="update-processing.php" method="post">
+                            <form action="update-processing.php" method="post" enctype="multipart/form-data">
                               <div class="modal-content">
                                 <div class="modal-header">
                                   <h5 class="modal-title" id="exampleModalLabel">Modifier la note - <span class="text-primary"><?php if (!empty($noteUpdate['title'])) { echo $noteUpdate['title']; } ?></span></h5>
@@ -149,7 +149,30 @@ require_once($_SERVER['DOCUMENT_ROOT']."/include/security.php");
                                   </div>
                                   <div class="form-group">
                                     <label for="description">Description</label>
-                                    <textarea class="form-control" id="description" name="description" rows="10" required><?php if (!empty($noteUpdate['description'])) { echo $noteUpdate['description']; } ?></textarea>
+                                    <textarea class="form-control" id="description" name="description" rows="6" required><?php if (!empty($noteUpdate['description'])) { echo $noteUpdate['description']; } ?></textarea>
+                                  </div>
+                                  <?php if (!empty($noteUpdate['illustration'])) { ?>
+                                    <span class="mb-2" style="display: block;">Illustration</span>
+                                    <img class="img-fluid mb-3 rounded" src="/img/notes/<?php echo $noteUpdate['illustration'] ?>" style="max-height: 15rem;">
+                                    <div class="mb-3">
+                                      <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteIllustrationModal">
+                                        Supprimer la photo
+                                      </button>
+                                    </div>
+                                  <?php } ?>
+
+                                  <div class="custom-file">
+                                    <input type="file" class="custom-file-input  form-control" id="illustrationUpdate" name="illustrationUpdate" accept="image/png, image/jpeg, image/bmp, image/gif, image/x-icon, image/svg+xml, image/tiff, image/webp">
+                                    <label class="custom-file-label form-label" for="illustrationUpdate">
+                                      <?php
+                                      if (!empty($noteUpdate['illustration'])) {
+                                        echo $noteUpdate['illustration'];
+                                      }
+                                      else {
+                                        echo "Image";
+                                      }
+                                      ?>
+                                    </label>
                                   </div>
                                 </div>
                                 <div class="modal-footer">
@@ -185,14 +208,14 @@ require_once($_SERVER['DOCUMENT_ROOT']."/include/security.php");
                                 <div class="modal-body">
                                   <input type="hidden" name="deleteId" value="<?php echo $_POST['deleteId'] ?>" required>
                                   <div class="row">
-                                    <div class="col-lg-<?php if (!empty($noteDelete['illustration'])) { echo "8"; } else { echo "12"; } ?> mb-3">
+                                    <div class="col-lg-<?php if (!empty($noteDelete['illustration'])) { if (strlen($noteDelete['description']) < 750) { echo "8"; } else { echo "12"; } } else { echo "12"; } ?> mb-3">
                                       <?php echo nl2br(htmlspecialchars($noteDelete['description'])); ?>
                                     </div>
                                     <?php if (!empty($noteDelete['illustration'])) { ?>
-                                      <div class="col-lg-4 d-flex justify-content-center align-items-center">
-                                        <img class="img-fluid rounded" src="/img/<?php echo $noteDelete['illustration'] ?>" style="max-height: 15rem;">
-                                      </div>
-                                      <?php } ?>
+                                    <div class="col-lg-<?php if (!empty($noteDelete['illustration'])) { if (strlen($noteDelete['description']) < 750) { echo "4"; } else { echo "12"; } } else { echo "12"; } ?> d-flex justify-content-center align-items-center">
+                                      <img class="img-fluid rounded" src="/img/notes/<?php echo $noteDelete['illustration'] ?>" style="max-height: 15rem;">
+                                    </div>
+                                    <?php } ?>
                                   </div>
                                 </div>
                                 <div class="modal-footer">
@@ -207,9 +230,10 @@ require_once($_SERVER['DOCUMENT_ROOT']."/include/security.php");
                       }
                       ?>
 
+                        <!-- Modal Create Note -->
                         <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                           <div class="modal-dialog modal-lg" role="document">
-                            <form action="create-processing.php" method="post">
+                            <form action="create-processing.php" method="post" enctype="multipart/form-data">
                               <div class="modal-content">
                                 <div class="modal-header">
                                   <h5 class="modal-title" id="exampleModalLabel">Ajouter une note</h5>
@@ -226,12 +250,36 @@ require_once($_SERVER['DOCUMENT_ROOT']."/include/security.php");
                                     <label for="description">Description</label>
                                     <textarea class="form-control" id="description" name="description" rows="10" required></textarea>
                                   </div>
+                                  <div class="custom-file">
+                                    <input type="file" class="custom-file-input  form-control" id="illustration" name="illustration" accept="image/png, image/jpeg, image/bmp, image/gif, image/x-icon, image/svg+xml, image/tiff, image/webp">
+                                    <label class="custom-file-label form-label" for="illustration">Image</label>
+                                  </div>
                                 </div>
                                 <div class="modal-footer">
                                   <button type="submit" class="btn btn-success" name="createSubmit">Ajouter</button>
                                 </div>
                               </div>
                             </form>
+                          </div>
+                        </div>
+
+                        <!-- Modal Delete Illustration Note-->
+                        <div class="modal fade" id="deleteIllustrationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Supprimer la photo</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <p class="mb-3">Êtes-vous sûr de vouloir supprimer cette photo ?</p>
+                              </div>
+                              <div class="modal-footer">
+                                <a class="btn btn-danger" href="update-processing.php?idDeleteIllustration=<?php echo $_POST['updateId'] ?>" role="button">Supprimer</a>
+                              </div>
+                            </div>
                           </div>
                         </div>
 
@@ -285,6 +333,16 @@ require_once($_SERVER['DOCUMENT_ROOT']."/include/security.php");
       <?php
     }
     ?>
+
+    <script type="text/javascript">
+    $('.custom-file input').change(function (e) {
+      var files = [];
+      for (var i = 0; i < $(this)[0].files.length; i++) {
+        files.push($(this)[0].files[i].name);
+      }
+      $(this).next('.custom-file-label').html(files.join(', '));
+    });
+    </script>
 
 </body>
 
