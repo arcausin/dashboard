@@ -161,7 +161,7 @@ require_once($_SERVER['DOCUMENT_ROOT']."/include/security.php");
                                     </div>
                                   <?php } ?>
 
-                                  <div class="custom-file">
+                                  <div class="custom-file mb-3">
                                     <input type="file" class="custom-file-input  form-control" id="illustrationUpdate" name="illustrationUpdate" accept="image/png, image/jpeg, image/bmp, image/gif, image/x-icon, image/svg+xml, image/tiff, image/webp">
                                     <label class="custom-file-label form-label" for="illustrationUpdate">
                                       <?php
@@ -173,6 +173,10 @@ require_once($_SERVER['DOCUMENT_ROOT']."/include/security.php");
                                       }
                                       ?>
                                     </label>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="dateNotes">Date</label>
+                                    <input type="date" class="form-control" id="dateNotes" name="dateNotes" value="<?php echo $noteUpdate['dateNotes'] ?>" required>
                                   </div>
                                 </div>
                                 <div class="modal-footer">
@@ -190,7 +194,7 @@ require_once($_SERVER['DOCUMENT_ROOT']."/include/security.php");
                       <?php
                       if (isset($_POST['deleteSubmit'])) {
 
-                        $reqDelete = $conn_dashboard->prepare('SELECT id, title, description, illustration FROM note WHERE id = ?');
+                        $reqDelete = $conn_dashboard->prepare('SELECT id, title, description, illustration, dateNotes FROM note WHERE id = ?');
                         $reqDelete->execute(array($_POST['deleteId']));
                         $noteDelete = $reqDelete->fetch()
                         ?>
@@ -218,7 +222,8 @@ require_once($_SERVER['DOCUMENT_ROOT']."/include/security.php");
                                     <?php } ?>
                                   </div>
                                 </div>
-                                <div class="modal-footer">
+                                <div class="modal-footer d-flex justify-content-between">
+                                  <span><?php echo date("d/m/Y", strtotime($noteDelete['dateNotes']));?></span>
                                   <button type="submit" class="btn btn-danger" name="deleteSubmit">Supprimer</button>
                                 </div>
                               </div>
