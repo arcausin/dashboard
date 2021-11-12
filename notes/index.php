@@ -56,7 +56,7 @@ require_once($_SERVER['DOCUMENT_ROOT']."/include/security.php");
                       <div class="row">
 
                       <?php
-                      $req = $conn_dashboard->prepare('SELECT id, idUser, title, description, illustration, favorite, creationDate FROM note WHERE idUser = ? ORDER BY creationDate DESC');
+                      $req = $conn_dashboard->prepare('SELECT id, idUser, title, description, illustration, favorite, dateNotes FROM note WHERE idUser = ? ORDER BY dateNotes DESC');
                       $req->execute(array($_SESSION['id']));
 
                       while ($note = $req->fetch()) {
@@ -114,7 +114,7 @@ require_once($_SERVER['DOCUMENT_ROOT']."/include/security.php");
                               </div>
 
                               <!-- Card Footer -->
-                              <div class="card-footer"><span class="text-primary float-right"><?php echo date("d/m/Y", strtotime($note['creationDate']));?></span></div>
+                              <div class="card-footer"><span class="text-primary float-right"><?php echo date("d/m/Y", strtotime($note['dateNotes']));?></span></div>
 
                           </div>
                         </div>
@@ -126,7 +126,7 @@ require_once($_SERVER['DOCUMENT_ROOT']."/include/security.php");
                       <?php
                       if (isset($_POST['updateSubmit'])) {
 
-                        $reqUpdate = $conn_dashboard->prepare('SELECT id, idUser, title, description, illustration, favorite, creationDate FROM note WHERE id = ?');
+                        $reqUpdate = $conn_dashboard->prepare('SELECT id, idUser, title, description, illustration, favorite, dateNotes FROM note WHERE id = ?');
                         $reqUpdate->execute(array($_POST['updateId']));
                         $noteUpdate = $reqUpdate->fetch()
                         ?>
@@ -250,9 +250,13 @@ require_once($_SERVER['DOCUMENT_ROOT']."/include/security.php");
                                     <label for="description">Description</label>
                                     <textarea class="form-control" id="description" name="description" rows="10" required></textarea>
                                   </div>
-                                  <div class="custom-file">
+                                  <div class="custom-file mb-3">
                                     <input type="file" class="custom-file-input  form-control" id="illustration" name="illustration" accept="image/png, image/jpeg, image/bmp, image/gif, image/x-icon, image/svg+xml, image/tiff, image/webp">
                                     <label class="custom-file-label form-label" for="illustration">Image</label>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="dateNotes">Date</label>
+                                    <input type="date" class="form-control" id="dateNotes" name="dateNotes" value="<?php echo date('Y-m-d');?>" required>
                                   </div>
                                 </div>
                                 <div class="modal-footer">

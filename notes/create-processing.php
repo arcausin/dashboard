@@ -9,6 +9,9 @@ if (isset($_POST['createSubmit'])) {
   } elseif (empty($_POST['description'])) {
     header('Location: /notes/');
     exit();
+  } elseif (empty($_POST['dateNotes'])) {
+    header('Location: /notes/');
+    exit();
   }
   else {
     if (isset($_FILES['illustration']) && $_FILES['illustration']['error'] == 0) {
@@ -56,12 +59,13 @@ if (isset($_POST['createSubmit'])) {
     else {
       $file = NULL;
     }
-    $req = $conn_dashboard->prepare('INSERT INTO note (idUser, title, description, illustration, creationDate) VALUES(:idUser, :title, :description, :illustration, NOW())');
+    $req = $conn_dashboard->prepare('INSERT INTO note (idUser, title, description, illustration, dateNotes) VALUES(:idUser, :title, :description, :illustration, :dateNotes)');
     $req->execute(array(
         'idUser' => $user['id'],
         'title' => $_POST['title'],
         'description' => $_POST['description'],
-        'illustration' => $file
+        'illustration' => $file,
+        'dateNotes' => $_POST['dateNotes']
     ));
     header('Location: /notes/');
     exit();
