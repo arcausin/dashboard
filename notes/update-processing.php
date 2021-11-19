@@ -66,6 +66,11 @@ if (isset($_POST['updateSubmit'])) { // on vérifie si on a bien récup toutes l
       }
       $file = md5(uniqid()) .$extension;
       move_uploaded_file($_FILES['illustrationUpdate']['tmp_name'], $folder . $file);
+
+      if (!empty($note['illustration'])) {
+        $link = $folder.$note['illustration'];
+        unlink($link);
+      }
     }
     else { // sinon on garde l'image qu'on avait deja et on update la base de données
       $file = $note['illustration'];
@@ -87,7 +92,7 @@ if (isset($_POST['updateSubmit'])) { // on vérifie si on a bien récup toutes l
     exit();
   }
   else { // si la note lui appartient on supprime le fichier du serveur et on update la base de données
-    $link = $_SERVER['DOCUMENT_ROOT']."/img/notes/".$deleteIllustration['illustration'];
+    $link = $folder.$deleteIllustration['illustration'];
     unlink($link);
     $file = NULL;
 
