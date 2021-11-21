@@ -13,8 +13,10 @@ if (isset($_POST['deleteSubmit'])) {
     exit();
   }
   else {
-    $link = $_SERVER['DOCUMENT_ROOT']."/img/notes/".$deleteNote['illustration'];
-    unlink($link);
+    if (!empty($deleteNote['illustration'])) {
+      $link = $_SERVER['DOCUMENT_ROOT']."/img/notes/".$deleteNote['illustration'];
+      unlink($link);
+    }
 
     $req = $conn_dashboard->prepare('DELETE FROM note WHERE id = ?');
     $req->execute(array($_POST['deleteId']));
