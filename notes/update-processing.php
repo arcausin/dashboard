@@ -25,7 +25,7 @@ if (isset($_POST['updateSubmit'])) { // on vérifie si on a bien récup toutes l
     if ($reqNote->rowCount() == 0) {
       header('Location: /notes/');
       exit();
-    } elseif (isset($_FILES['illustrationUpdate']) && $_FILES['illustrationUpdate']['error'] == 0) { // si il ajoute une image on la stock
+    } elseif (isset($_FILES['illustrationUpdate']) && $_FILES['illustrationUpdate']['error'] == 0) { // si il ajoute une image on la stock et on supprime l'ancienne si elle existe
       $folder = $_SERVER['DOCUMENT_ROOT']."/img/notes/";
 
       switch ($_FILES['illustrationUpdate']['type']) {
@@ -64,18 +64,21 @@ if (isset($_POST['updateSubmit'])) { // on vérifie si on a bien récup toutes l
         $extension = ".unknown";
         break;
       }
+      //===== on stock la nouvelle photo
       $file = md5(uniqid()) .$extension;
       move_uploaded_file($_FILES['illustrationUpdate']['tmp_name'], $folder . $file);
 
+      //===== on supprime l'ancienne photo si il en a une
       if (!empty($note['illustration'])) {
         $link = $folder.$note['illustration'];
         unlink($link);
       }
     }
-    else { // sinon on garde l'image qu'on avait deja et on update la base de données
+    else { // sinon on garde l'image qu'on avait deja
       $file = $note['illustration'];
     }
 
+    //===== on update la base de données
     $req = $conn_dashboard->prepare('UPDATE note SET title = ?, description = ?, illustration = ?, dateNotes = ? WHERE id = ?');
     $req->execute(array($_POST['title'], $_POST['description'], $file, $_POST['dateNotes'], $_POST['updateId']));
     header('Location: /notes/');
@@ -92,6 +95,7 @@ if (isset($_POST['updateSubmit'])) { // on vérifie si on a bien récup toutes l
     exit();
   }
   else { // si la note lui appartient on supprime le fichier du serveur et on update la base de données
+    $folder = $_SERVER['DOCUMENT_ROOT']."/img/notes/";
     $link = $folder.$deleteIllustration['illustration'];
     unlink($link);
     $file = NULL;
