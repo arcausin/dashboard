@@ -58,15 +58,21 @@ if (!empty($_SESSION['id'])) {
                                               <strong>Erreur !</strong> Adresse mail inconnue
                                               <button type="button" class="close" data-dismiss="alert">&times;</button>
                                           </div>
+
+                                      <?php elseif(isset($_GET['mailSend'])): ?>
+                                          <div class="alert alert-success alert-dismissible fade show">
+                                              Mail envoyé sur l'adresse mail pour réinitialiser le mot de passe
+                                              <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                          </div>
                                         <?php endif; ?>
                                         <h1 class="h4 text-gray-900 mb-2">Mot de passe oublié ?</h1>
                                         <p class="mb-4">Entrez simplement votre adresse e-mail ci-dessous et nous vous enverrons un lien pour réinitialiser votre mot de passe !</p>
                                     </div>
-                                    <form class="user" action="login-processing.php" method="post">
+                                    <form class="user" action="forgot-password-processing.php" method="post">
                                         <div class="form-group">
                                             <input type="email" name="mailAdress" class="form-control form-control-user"
                                                 id="exampleInputEmail" aria-describedby="emailHelp"
-                                                placeholder="Adresse mail">
+                                                placeholder="Adresse mail" required>
                                         </div>
                                         <input type="submit" name="submit" class="btn btn-primary btn-user btn-block" value="Réinitialiser votre mot de passe">
                                     </form>
