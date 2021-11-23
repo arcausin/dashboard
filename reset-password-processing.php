@@ -16,14 +16,14 @@ if (isset($_POST['submit'])) { // bouton submit appuyé
     exit();
   } elseif (empty($_POST['passwordConfirm'])) { // champ Confirmer le mot de passe vide
     // veuillez confirmer votre Mot de passe
-    header('Location: reset-password.php?passwordConfirm&token' . $_GET['token']);
+    header('Location: reset-password.php?passwordConfirm&token=' . $_GET['token']);
     exit();
   } elseif ($reqResetPassword->rowCount() == 0) {
-    header('Location: reset-password.php');
+    header('Location: forgot-password.php');
     exit();
   } elseif ($_POST['password'] != $_POST['passwordConfirm']) { // champ Mot de passe et Confirmer le mot de passe différent
     // les Mots de passe ne correspondent pas
-    header('Location: reset-password.php?passwordPasswordConfirm&token' . $_GET['token']);
+    header('Location: reset-password.php?passwordPasswordConfirm&token=' . $_GET['token']);
     exit();
   }
   else { // toutes les données du formulaires sont correctes
