@@ -29,6 +29,7 @@ if (isset($_POST['submit'])) { // bouton submit appuyé
     // préparation du mail
 		$headers = "MIME-Version: 1.0" . "\r\n";
 		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+    $headers .= "From: Contact <contact@alexis-dambrosio.fr>";
 
     $subject = "[Assistant virtuel] - Demande de réinitialisation de mot de passe";
 
