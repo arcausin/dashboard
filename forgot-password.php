@@ -1,5 +1,13 @@
+<?php
+session_start();
+require_once("include/database-connexion.php");
+if (!empty($_SESSION['id'])) {
+  header('Location: index.php');
+  exit();
+}
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
 
@@ -9,7 +17,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Forgot Password</title>
+    <title>Mot de passe oublié - Tableau de bord</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -39,26 +47,35 @@
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-2">Forgot Your Password?</h1>
-                                        <p class="mb-4">We get it, stuff happens. Just enter your email address below
-                                            and we'll send you a link to reset your password!</p>
+                                      <?php if (isset($_GET['mailAdress'])): ?>
+                                          <div class="alert alert-danger alert-dismissible fade show">
+                                              <strong>Erreur !</strong> Veuillez entrer votre adresse mail
+                                              <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                          </div>
+
+                                      <?php elseif(isset($_GET['mailAdressUnknown'])): ?>
+                                          <div class="alert alert-danger alert-dismissible fade show">
+                                              <strong>Erreur !</strong> Adresse mail inconnue
+                                              <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                          </div>
+                                        <?php endif; ?>
+                                        <h1 class="h4 text-gray-900 mb-2">Mot de passe oublié ?</h1>
+                                        <p class="mb-4">Entrez simplement votre adresse e-mail ci-dessous et nous vous enverrons un lien pour réinitialiser votre mot de passe !</p>
                                     </div>
-                                    <form class="user">
+                                    <form class="user" action="login-processing.php" method="post">
                                         <div class="form-group">
-                                            <input type="email" class="form-control form-control-user"
+                                            <input type="email" name="mailAdress" class="form-control form-control-user"
                                                 id="exampleInputEmail" aria-describedby="emailHelp"
-                                                placeholder="Enter Email Address...">
+                                                placeholder="Adresse mail">
                                         </div>
-                                        <a href="login.html" class="btn btn-primary btn-user btn-block">
-                                            Reset Password
-                                        </a>
+                                        <input type="submit" name="submit" class="btn btn-primary btn-user btn-block" value="Réinitialiser votre mot de passe">
                                     </form>
                                     <hr>
                                     <div class="text-center">
-                                        <a class="small" href="register.html">Create an Account!</a>
+                                        <a class="small" href="register.php">Créer un compte !</a>
                                     </div>
                                     <div class="text-center">
-                                        <a class="small" href="login.html">Already have an account? Login!</a>
+                                        <a class="small" href="login.php">Connexion !</a>
                                     </div>
                                 </div>
                             </div>
