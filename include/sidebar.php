@@ -26,83 +26,98 @@
         Interface
     </div>
 
-    <!-- Nav Item - Pages Collapse Menu -->
+    <!-- Nav Item - Organizations Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-            aria-expanded="true" aria-controls="collapseTwo">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Components</span>
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOrganizations"
+            aria-expanded="true" aria-controls="collapseOrganizations">
+            <i class="fas fa-fw fa-clipboard-list"></i>
+            <span>Organisations</span>
         </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapseOrganizations" class="collapse" aria-labelledby="headingOrganizations"
+            data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Custom Components:</h6>
-                <a class="collapse-item" href="/buttons.php">Buttons</a>
-                <a class="collapse-item" href="/cards.php">Cards</a>
+                <a class="collapse-item" href="/to-do-list/">To Do List</a>
                 <a class="collapse-item" href="/notes/">Notes</a>
             </div>
         </div>
     </li>
 
-    <!-- Nav Item - Utilities Collapse Menu -->
+    <!-- Nav Item - Finances Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-            aria-expanded="true" aria-controls="collapseUtilities">
-            <i class="fas fa-fw fa-wrench"></i>
-            <span>Utilities</span>
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFinances"
+            aria-expanded="true" aria-controls="collapseFinances">
+            <i class="fas fa-fw fa-coins"></i>
+            <span>Finances</span>
         </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+        <div id="collapseFinances" class="collapse" aria-labelledby="headingFinances"
             data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Custom Utilities:</h6>
-                <a class="collapse-item" href="/utilities-color.php">Colors</a>
-                <a class="collapse-item" href="/utilities-border.php">Borders</a>
-                <a class="collapse-item" href="/utilities-animation.php">Animations</a>
-                <a class="collapse-item" href="/utilities-other.php">Other</a>
+                <a class="collapse-item" href="#">Cryptomonnaies</a>
+                <a class="collapse-item" href="#">Dépenses bancaires</a>
             </div>
         </div>
     </li>
 
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-
-    <!-- Heading -->
-    <div class="sidebar-heading">
-        Addons
-    </div>
-
-    <!-- Nav Item - Pages Collapse Menu -->
+    <!-- Nav Item - SocialNetworks Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-            aria-expanded="true" aria-controls="collapsePages">
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Pages</span>
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSocialNetworks"
+            aria-expanded="true" aria-controls="collapseSocialNetworks">
+            <i class="fas fa-fw fa-user-friends"></i>
+            <span>Réseaux sociaux</span>
         </a>
-        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+        <div id="collapseSocialNetworks" class="collapse" aria-labelledby="headingSocialNetworks"
+            data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Login Screens:</h6>
-                <a class="collapse-item" href="/login.php">Login</a>
-                <a class="collapse-item" href="/register.php">Register</a>
-                <a class="collapse-item" href="/forgot-password.php">Forgot Password</a>
-                <div class="collapse-divider"></div>
-                <h6 class="collapse-header">Other Pages:</h6>
-                <a class="collapse-item" href="/404.php">404 Page</a>
-                <a class="collapse-item" href="/blank.php">Blank Page</a>
+                <a class="collapse-item" href="#">Messagerie</a>
+                <a class="collapse-item" href="#">Forum</a>
             </div>
         </div>
     </li>
 
-    <!-- Nav Item - Charts -->
+    <!-- Nav Item - contents Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link" href="/charts.php">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Charts</span></a>
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsecontents"
+            aria-expanded="true" aria-controls="collapsecontents">
+            <i class="fas fa-fw fa-desktop"></i>
+            <span>Contenus</span>
+        </a>
+        <div id="collapsecontents" class="collapse" aria-labelledby="headingcontents"
+            data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="#">Vidéo</a>
+                <a class="collapse-item" href="#">Audio</a>
+            </div>
+        </div>
     </li>
 
-    <!-- Nav Item - Tables -->
+    <!-- Nav Item - Tools Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link" href="/tables.php">
-            <i class="fas fa-fw fa-table"></i>
-            <span>Tables</span></a>
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTools"
+            aria-expanded="true" aria-controls="collapseTools">
+            <i class="fas fa-fw fa-wrench"></i>
+            <span>Outils</span>
+        </a>
+        <div id="collapseTools" class="collapse" aria-labelledby="headingTools"
+            data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="#">Envoi de mail</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Nav Item - Settings Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSettings"
+            aria-expanded="true" aria-controls="collapseSettings">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Paramètres</span>
+        </a>
+        <div id="collapseSettings" class="collapse" aria-labelledby="headingSettings"
+            data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="#">Assistant Personel</a>
+            </div>
+        </div>
     </li>
 
     <!-- Divider -->
