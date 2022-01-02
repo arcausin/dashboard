@@ -57,7 +57,7 @@ require_once($_SERVER['DOCUMENT_ROOT']."/include/security.php");
 
                       <?php
                       $req = $conn_dashboard->prepare('SELECT id, idUser, title, description, illustration, favorite, dateNotes FROM note WHERE idUser = ? ORDER BY dateNotes DESC');
-                      $req->execute(array($_SESSION['id']));
+                      $req->execute(array($user['id']));
 
                       while ($note = $req->fetch()) {
                         ?>
@@ -125,113 +125,127 @@ require_once($_SERVER['DOCUMENT_ROOT']."/include/security.php");
 
                       <?php
                       if (isset($_POST['updateSubmit'])) {
+                        $reqUpdateNote = $conn_dashboard->prepare('SELECT idUser FROM note WHERE id = ? AND idUser = ?');
+                        $reqUpdateNote->execute(array($_POST['updateId'], $user['id']));
+                        $reqUpdateNote->closeCursor();
 
-                        $reqUpdate = $conn_dashboard->prepare('SELECT id, idUser, title, description, illustration, favorite, dateNotes FROM note WHERE id = ?');
-                        $reqUpdate->execute(array($_POST['updateId']));
-                        $noteUpdate = $reqUpdate->fetch()
-                        ?>
-                        <!-- Modal Update -->
-                        <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                          <div class="modal-dialog modal-lg" role="document">
-                            <form action="update-processing.php" method="post" enctype="multipart/form-data">
-                              <div class="modal-content">
-                                <div class="modal-header">
-                                  <h5 class="modal-title" id="exampleModalLabel">Modifier la note - <span class="text-primary"><?php if (!empty($noteUpdate['title'])) { echo $noteUpdate['title']; } ?></span></h5>
-                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                  </button>
-                                </div>
-                                <div class="modal-body">
-                                  <input type="hidden" name="updateId" value="<?php echo $_POST['updateId'] ?>" required>
-                                  <div class="form-group">
-                                    <label for="title">Titre</label>
-                                    <input type="text" class="form-control" id="title" name="title" value="<?php if (!empty($noteUpdate['title'])) { echo $noteUpdate['title']; } ?>" required>
+                        if ($reqUpdateNote->rowCount() == 0) {
+                        }
+                        else {
+                          $reqUpdate = $conn_dashboard->prepare('SELECT id, idUser, title, description, illustration, favorite, dateNotes FROM note WHERE id = ?');
+                          $reqUpdate->execute(array($_POST['updateId']));
+                          $noteUpdate = $reqUpdate->fetch();
+                          $reqUpdate->closeCursor();
+                          ?>
+                          <!-- Modal Update -->
+                          <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="document">
+                              <form action="update-processing.php" method="post" enctype="multipart/form-data">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Modifier la note - <span class="text-primary"><?php if (!empty($noteUpdate['title'])) { echo $noteUpdate['title']; } ?></span></h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
                                   </div>
-                                  <div class="form-group">
-                                    <label for="description">Description</label>
-                                    <textarea class="form-control" id="description" name="description" rows="6" required><?php if (!empty($noteUpdate['description'])) { echo $noteUpdate['description']; } ?></textarea>
-                                  </div>
-                                  <?php if (!empty($noteUpdate['illustration'])) { ?>
-                                    <span class="mb-2" style="display: block;">Illustration</span>
-                                    <img class="img-fluid mb-3 rounded" src="/img/notes/<?php echo $noteUpdate['illustration'] ?>" style="max-height: 15rem;">
-                                    <div class="mb-3">
-                                      <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteIllustrationModal">
-                                        Supprimer la photo
-                                      </button>
+                                  <div class="modal-body">
+                                    <input type="hidden" name="updateId" value="<?php echo $_POST['updateId'] ?>" required>
+                                    <div class="form-group">
+                                      <label for="title">Titre</label>
+                                      <input type="text" class="form-control" id="title" name="title" value="<?php if (!empty($noteUpdate['title'])) { echo $noteUpdate['title']; } ?>" required>
                                     </div>
-                                  <?php } ?>
+                                    <div class="form-group">
+                                      <label for="description">Description</label>
+                                      <textarea class="form-control" id="description" name="description" rows="6" required><?php if (!empty($noteUpdate['description'])) { echo $noteUpdate['description']; } ?></textarea>
+                                    </div>
+                                    <?php if (!empty($noteUpdate['illustration'])) { ?>
+                                      <span class="mb-2" style="display: block;">Illustration</span>
+                                      <img class="img-fluid mb-3 rounded" src="/img/notes/<?php echo $noteUpdate['illustration'] ?>" style="max-height: 15rem;">
+                                      <div class="mb-3">
+                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteIllustrationModal">
+                                          Supprimer la photo
+                                        </button>
+                                      </div>
+                                    <?php } ?>
 
-                                  <div class="custom-file mb-3">
-                                    <input type="file" class="custom-file-input  form-control" id="illustrationUpdate" name="illustrationUpdate" accept="image/png, image/jpeg, image/bmp, image/gif, image/x-icon, image/svg+xml, image/tiff, image/webp">
-                                    <label class="custom-file-label form-label" for="illustrationUpdate">
-                                      <?php
-                                      if (!empty($noteUpdate['illustration'])) {
-                                        echo $noteUpdate['illustration'];
-                                      }
-                                      else {
-                                        echo "Image";
-                                      }
-                                      ?>
-                                    </label>
+                                    <div class="custom-file mb-3">
+                                      <input type="file" class="custom-file-input  form-control" id="illustrationUpdate" name="illustrationUpdate" accept="image/png, image/jpeg, image/bmp, image/gif, image/x-icon, image/svg+xml, image/tiff, image/webp">
+                                      <label class="custom-file-label form-label" for="illustrationUpdate">
+                                        <?php
+                                        if (!empty($noteUpdate['illustration'])) {
+                                          echo $noteUpdate['illustration'];
+                                        }
+                                        else {
+                                          echo "Image";
+                                        }
+                                        ?>
+                                      </label>
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="dateNotes">Date</label>
+                                      <input type="date" class="form-control" id="dateNotes" name="dateNotes" value="<?php echo $noteUpdate['dateNotes'] ?>" required>
+                                    </div>
                                   </div>
-                                  <div class="form-group">
-                                    <label for="dateNotes">Date</label>
-                                    <input type="date" class="form-control" id="dateNotes" name="dateNotes" value="<?php echo $noteUpdate['dateNotes'] ?>" required>
+                                  <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary" name="updateSubmit">Modifier</button>
                                   </div>
                                 </div>
-                                <div class="modal-footer">
-                                  <button type="submit" class="btn btn-primary" name="updateSubmit">Modifier</button>
-                                </div>
-                              </div>
-                            </form>
+                              </form>
+                            </div>
                           </div>
-                        </div>
-                        <?php
-                        $reqUpdate->closeCursor();
+                          <?php
+                        }
                       }
                       ?>
 
                       <?php
                       if (isset($_POST['deleteSubmit'])) {
+                        $reqDeleteNote = $conn_dashboard->prepare('SELECT idUser FROM note WHERE id = ? AND idUser = ?');
+                        $reqDeleteNote->execute(array($_POST['deleteId'], $user['id']));
+                        $reqDeleteNote->closeCursor();
 
-                        $reqDelete = $conn_dashboard->prepare('SELECT id, title, description, illustration, dateNotes FROM note WHERE id = ?');
-                        $reqDelete->execute(array($_POST['deleteId']));
-                        $noteDelete = $reqDelete->fetch()
-                        ?>
-                        <!-- Modal Delete -->
-                        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                          <div class="modal-dialog modal-lg" role="document">
-                            <form action="delete-processing.php" method="post">
-                              <div class="modal-content">
-                                <div class="modal-header">
-                                  <h5 class="modal-title" id="exampleModalLabel">Supprimer la note - <span class="text-danger"><?php if (!empty($noteDelete['title'])) { echo $noteDelete['title']; } ?></span></h5>
-                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                  </button>
-                                </div>
-                                <div class="modal-body">
-                                  <input type="hidden" name="deleteId" value="<?php echo $_POST['deleteId'] ?>" required>
-                                  <div class="row">
-                                    <div class="col-lg-<?php if (!empty($noteDelete['illustration'])) { if (strlen($noteDelete['description']) < 750) { echo "8"; } else { echo "12"; } } else { echo "12"; } ?> mb-3">
-                                      <?php echo nl2br(htmlspecialchars($noteDelete['description'])); ?>
+                        if ($reqDeleteNote->rowCount() == 0) {
+                        }
+                        else {
+                          $reqDelete = $conn_dashboard->prepare('SELECT id, title, description, illustration, dateNotes FROM note WHERE id = ?');
+                          $reqDelete->execute(array($_POST['deleteId']));
+                          $noteDelete = $reqDelete->fetch();
+                          $reqDelete->closeCursor();
+                          ?>
+                          <!-- Modal Delete -->
+                          <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="document">
+                              <form action="delete-processing.php" method="post">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Supprimer la note - <span class="text-danger"><?php if (!empty($noteDelete['title'])) { echo $noteDelete['title']; } ?></span></h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <input type="hidden" name="deleteId" value="<?php echo $_POST['deleteId'] ?>" required>
+                                    <div class="row">
+                                      <div class="col-lg-<?php if (!empty($noteDelete['illustration'])) { if (strlen($noteDelete['description']) < 750) { echo "8"; } else { echo "12"; } } else { echo "12"; } ?> mb-3">
+                                        <?php echo nl2br(htmlspecialchars($noteDelete['description'])); ?>
+                                      </div>
+                                      <?php if (!empty($noteDelete['illustration'])) { ?>
+                                      <div class="col-lg-<?php if (!empty($noteDelete['illustration'])) { if (strlen($noteDelete['description']) < 750) { echo "4"; } else { echo "12"; } } else { echo "12"; } ?> d-flex justify-content-center align-items-center">
+                                        <img class="img-fluid rounded" src="/img/notes/<?php echo $noteDelete['illustration'] ?>" style="max-height: 15rem;">
+                                      </div>
+                                      <?php } ?>
                                     </div>
-                                    <?php if (!empty($noteDelete['illustration'])) { ?>
-                                    <div class="col-lg-<?php if (!empty($noteDelete['illustration'])) { if (strlen($noteDelete['description']) < 750) { echo "4"; } else { echo "12"; } } else { echo "12"; } ?> d-flex justify-content-center align-items-center">
-                                      <img class="img-fluid rounded" src="/img/notes/<?php echo $noteDelete['illustration'] ?>" style="max-height: 15rem;">
-                                    </div>
-                                    <?php } ?>
+                                  </div>
+                                  <div class="modal-footer d-flex justify-content-between">
+                                    <span><?php echo date("d/m/Y", strtotime($noteDelete['dateNotes']));?></span>
+                                    <button type="submit" class="btn btn-danger" name="deleteSubmit">Supprimer</button>
                                   </div>
                                 </div>
-                                <div class="modal-footer d-flex justify-content-between">
-                                  <span><?php echo date("d/m/Y", strtotime($noteDelete['dateNotes']));?></span>
-                                  <button type="submit" class="btn btn-danger" name="deleteSubmit">Supprimer</button>
-                                </div>
-                              </div>
-                            </form>
+                              </form>
+                            </div>
                           </div>
-                        </div>
-                        <?php
-                        $reqDelete->closeCursor();
+                          <?php
+                        }
                       }
                       ?>
 
