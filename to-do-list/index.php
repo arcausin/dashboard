@@ -87,7 +87,6 @@ require_once($_SERVER['DOCUMENT_ROOT']."/include/security.php");
                   if (isset($_POST['deleteSubmit'])) {
                     $reqDeleteToDoList = $conn_dashboard->prepare('SELECT idUser FROM to_do_list WHERE id = ? AND idUser = ?');
                     $reqDeleteToDoList->execute(array($_POST['deleteId'], $user['id']));
-                    $DeleteToDoList = $reqDeleteToDoList->fetch();
                     $reqDeleteToDoList->closeCursor();
 
                     if ($reqDeleteToDoList->rowCount() == 0) {
