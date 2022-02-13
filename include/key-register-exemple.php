@@ -1,0 +1,3 @@
+<?php
+$keyRegister = "test";
+?>
