@@ -18,6 +18,19 @@ require_once($_SERVER['DOCUMENT_ROOT']."/include/security.php");
     <!-- Custom fonts and styles for this template-->
     <?php require_once($_SERVER['DOCUMENT_ROOT']."/include/css.php"); ?>
 
+    <style>
+      .radius-up{
+        border-radius: 1.5em;
+      }
+      .transition-bg-color {
+        opacity: 1;
+        transition: opacity 0.25s;
+      }
+      .transition-bg-color:hover {
+        opacity: 0.75;
+      }
+    </style>
+
 </head>
 
 <body id="page-top">
@@ -47,7 +60,7 @@ require_once($_SERVER['DOCUMENT_ROOT']."/include/security.php");
                     <div class="col-lg-12">
                       <div class="row mb-4">
                         <div class="col-md-6">
-                          <h1 class="h3 text-gray-800">Kanban</h1>
+                          <h1 class="h3 text-gray-800">To Do List</h1>
                         </div>
                         <div class="col-md-6">
                           <form class="form-inline justify-content-end" action="create-processing.php" method="post">
@@ -61,147 +74,87 @@ require_once($_SERVER['DOCUMENT_ROOT']."/include/security.php");
                     </div>
                   </div>
 
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <div class="row text-center">
-                        <div class="col-lg-4 border">
-                          <h2>A faire</h2>
+                  <div class="row mb-5">
+                    <div class="col-md-12">
+                      <div class="row">
+                        <div class="col-md-4 border">
+                          <h2 class="text-center mt-3">A faire</h2>
+                          <hr>
                           <?php
-                      $req = $conn_dashboard->prepare('SELECT id, idUser, title, description, illustration, favorite, dateNotes FROM note WHERE idUser = ? ORDER BY dateNotes DESC');
-                      $req->execute(array($user['id']));
-
-                      while ($note = $req->fetch()) {
-                        ?>
-                        <!-- Dropdown Card Example -->
-                        <div class="card shadow mb-4">
-                            <!-- Card Header - Dropdown -->
-                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                              <h6 class="m-0 font-weight-bold"><span class="text-warning"><?php if ($note['favorite'] == 0) { echo '<i class="far fa-star"></i>'; } else { echo '<i class="fas fa-star"></i>'; } ?></span> <span class="text-primary"><?php echo $note['title'] ?></span></h6>
-                              <div class="dropdown no-arrow">
-                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                                  <form action="" method="post">
-                                    <input type="hidden" name="updateId" value="<?php echo $note['id'] ?>">
-                                    <button type="submit" class="dropdown-item" name="updateSubmit">Modifier</button>
-                                  </form>
-                                  <form action="" method="post">
-                                    <input type="hidden" name="deleteId" value="<?php echo $note['id'] ?>">
-                                    <button type="submit" class="dropdown-item" name="deleteSubmit">Supprimer</button>
-                                  </form>
-                                  <div class="dropdown-divider"></div>
-                                  <form action="favorite-processing.php" method="post">
-                                    <input type="hidden" name="favoriteId" value="<?php echo $note['id'] ?>">
-                                  <?php
-                                  if ($note['favorite'] == FALSE) {
-                                    ?>
-                                    <button type="submit" class="dropdown-item" name="addFavoriteSubmit">Ajouter aux favoris</button>
-                                    <?php
-                                  }
-                                  else {
-                                    ?>
-                                    <button type="submit" class="dropdown-item" name="removeFavoriteSubmit">Enlever des favoris</button>
-                                    <?php
-                                  }
-                                  ?>
-                                  </form>
+                          $req = $conn_dashboard->prepare('SELECT id, idUser, task, step, dateToDoList FROM to_do_list WHERE idUser = ? AND step = ? ORDER BY id desc');
+                          $req->execute(array($user['id'], 1));
+                          while ($toDoList = $req->fetch()) {
+                            ?>
+                            <div class="mb-3">
+                              <a class="text-decoration-none" href="update-processing.php?updateId=<?php echo $toDoList['id']; ?>">
+                                <div class="card radius-up border-0 bg-secondary text-white transition-bg-color">
+                                  <div class="card-body">
+                                    <p class="card-text"><?php echo $toDoList['task']; ?></p>
+                                    <p class="card-text text-right">
+                                      <small><?php echo date("d/m/Y", strtotime($toDoList['dateToDoList']));?></small>
+                                    </p>
+                                  </div>
                                 </div>
-                              </div>
+                              </a>
                             </div>
-                            <!-- Card Body -->
-                            <div class="card-body">
-                              <div class="row">
-                                <div class="col-lg-<?php if (!empty($note['illustration'])) { if (strlen($note['description']) < 750) { echo "8"; } else { echo "12"; } } else { echo "12"; } ?> mb-3">
-                                  <?php echo nl2br(htmlspecialchars($note['description'])); ?>
+                            <?php
+                          }
+                          $req->closeCursor();
+                          ?>
+                        </div>
+                        <div class="col-md-4 border">
+                          <h2 class="text-center mt-3">En cours</h2>
+                          <hr>
+                          <?php
+                          $req = $conn_dashboard->prepare('SELECT id, idUser, task, step, dateToDoList FROM to_do_list WHERE idUser = ? AND step = ? ORDER BY id desc');
+                          $req->execute(array($user['id'], 2));
+                          while ($toDoList = $req->fetch()) {
+                            ?>
+                            <div class="mb-3">
+                              <a class="text-decoration-none" href="update-processing.php?updateId=<?php echo $toDoList['id']; ?>">
+                                <div class="card radius-up border-0 bg-secondary text-white transition-bg-color">
+                                  <div class="card-body">
+                                    <p class="card-text"><?php echo $toDoList['task']; ?></p>
+                                    <p class="card-text text-right">
+                                      <small><?php echo date("d/m/Y", strtotime($toDoList['dateToDoList']));?></small>
+                                    </p>
+                                  </div>
                                 </div>
-                                <?php if (!empty($note['illustration'])) { ?>
-                                <div class="col-lg-<?php if (!empty($note['illustration'])) { if (strlen($note['description']) < 750) { echo "4"; } else { echo "12"; } } else { echo "12"; } ?> d-flex justify-content-center align-items-center">
-                                  <img class="img-fluid rounded" src="/img/notes/<?php echo $note['illustration'] ?>" style="max-height: 15rem;">
-                                </div>
-                                <?php } ?>
-                              </div>
+                              </a>
                             </div>
-
-                            <!-- Card Footer -->
-                            <div class="card-footer"><span class="text-primary float-right"><?php echo date("d/m/Y", strtotime($note['dateNotes']));?></span></div>
-
+                            <?php
+                          }
+                          $req->closeCursor();
+                          ?>
                         </div>
-                        <?php
-                      }
-                      $req->closeCursor();
-                      ?>
-                        </div>
-                        <div class="col-lg-4 border">
-                          <h2>En cours</h2>
-                        </div>
-                        <div class="col-lg-4 border">
-                          <h1>Terminer</h1>
+                        <div class="col-md-4 border">
+                          <h2 class="text-center mt-3">Terminer</h2>
+                          <hr>
+                          <?php
+                          $req = $conn_dashboard->prepare('SELECT id, idUser, task, step, dateToDoList FROM to_do_list WHERE idUser = ? AND step = ? ORDER BY id desc');
+                          $req->execute(array($user['id'], 3));
+                          while ($toDoList = $req->fetch()) {
+                            ?>
+                            <div class="mb-3">
+                              <a class="text-decoration-none" href="update-processing.php?updateId=<?php echo $toDoList['id']; ?>">
+                                <div class="card radius-up border-0 bg-secondary text-white transition-bg-color">
+                                  <div class="card-body">
+                                    <p class="card-text"><?php echo $toDoList['task']; ?></p>
+                                    <p class="card-text text-right">
+                                      <small><?php echo date("d/m/Y", strtotime($toDoList['dateToDoList']));?></small>
+                                    </p>
+                                  </div>
+                                </div>
+                              </a>
+                            </div>
+                            <?php
+                          }
+                          $req->closeCursor();
+                          ?>
                         </div>
                       </div>
                     </div>
                   </div>
-
-                  <ul class="list-group">
-
-                    <?php
-                    $req = $conn_dashboard->prepare('SELECT id, idUser, task, dateToDoList FROM to_do_list WHERE idUser = ? ORDER BY id ASC');
-                    $req->execute(array($user['id']));
-
-                    while ($toDoList = $req->fetch()) {
-                      ?>
-                      <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <?php echo $toDoList['task']; ?>
-                        <form action="" method="post">
-                          <input type="hidden" name="deleteId" value="<?php echo $toDoList['id'] ?>">
-                          <button type="submit" name="deleteSubmit" class="btn btn-danger pr-1 pl-1 pt-0 pb-0">X</button>
-                        </form>
-                      </li>
-                      <?php
-                    }
-                    $req->closeCursor();
-                    ?>
-                  </ul>
-
-                  <?php
-                  if (isset($_POST['deleteSubmit'])) {
-                    $reqDeleteToDoList = $conn_dashboard->prepare('SELECT idUser FROM to_do_list WHERE id = ? AND idUser = ?');
-                    $reqDeleteToDoList->execute(array($_POST['deleteId'], $user['id']));
-                    $reqDeleteToDoList->closeCursor();
-
-                    if ($reqDeleteToDoList->rowCount() == 0) {
-                    }
-                    else {
-                      $reqDelete = $conn_dashboard->prepare('SELECT id, task, dateToDoList FROM to_do_list WHERE id = ?');
-                      $reqDelete->execute(array($_POST['deleteId']));
-                      $toDoListDelete = $reqDelete->fetch();
-                      $reqDelete->closeCursor();
-                      ?>
-                      <!-- Modal Delete -->
-                      <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg" role="document">
-                          <form action="delete-processing.php" method="post">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Supprimer la Tâche - <span class="text-danger"><?php if (!empty($toDoListDelete['task'])) { echo $toDoListDelete['task']; } ?></span></h5>
-                                <input type="hidden" name="deleteId" value="<?php echo $_POST['deleteId'] ?>" required>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                  <span aria-hidden="true">&times;</span>
-                                </button>
-                              </div>
-                              <div class="modal-footer d-flex justify-content-between">
-                                <span><?php echo date("d/m/Y", strtotime($toDoListDelete['dateToDoList']));?></span>
-                                <button type="submit" class="btn btn-danger" name="deleteSubmit">Supprimer</button>
-                              </div>
-                            </div>
-                          </form>
-                        </div>
-                      </div>
-                      <?php
-                    }
-                  }
-                  ?>
-
                 </div>
                 <!-- /.container-fluid -->
 

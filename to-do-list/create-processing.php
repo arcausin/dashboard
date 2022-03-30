@@ -15,10 +15,11 @@ if (isset($_POST['createSubmit'])) {
     exit();
   }
   else {
-    $req = $conn_dashboard->prepare('INSERT INTO to_do_list (idUser, task, dateToDoList) VALUES(:idUser, :task, NOW())');
+    $req = $conn_dashboard->prepare('INSERT INTO to_do_list (idUser, task, step, dateToDoList) VALUES(:idUser, :task, :step, NOW())');
     $req->execute(array(
         'idUser' => $user['id'],
-        'task' => validationData($_POST['task'])
+        'task' => validationData($_POST['task']),
+        'step' => 1
     ));
     header('Location: /to-do-list/');
     exit();
