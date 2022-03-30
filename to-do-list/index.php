@@ -47,7 +47,7 @@ require_once($_SERVER['DOCUMENT_ROOT']."/include/security.php");
                     <div class="col-lg-12">
                       <div class="row mb-4">
                         <div class="col-md-6">
-                          <h1 class="h3 text-gray-800">To Do List</h1>
+                          <h1 class="h3 text-gray-800">Kanban</h1>
                         </div>
                         <div class="col-md-6">
                           <form class="form-inline justify-content-end" action="create-processing.php" method="post">
@@ -60,7 +60,87 @@ require_once($_SERVER['DOCUMENT_ROOT']."/include/security.php");
                       </div>
                     </div>
                   </div>
-                  <p class="mb-4 text-justify">Suspendisse finibus tortor eget tempus facilisis. Duis maximus convallis urna, et gravida felis elementum ut.</p>
+
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="row text-center">
+                        <div class="col-lg-4 border">
+                          <h2>A faire</h2>
+                          <?php
+                      $req = $conn_dashboard->prepare('SELECT id, idUser, title, description, illustration, favorite, dateNotes FROM note WHERE idUser = ? ORDER BY dateNotes DESC');
+                      $req->execute(array($user['id']));
+
+                      while ($note = $req->fetch()) {
+                        ?>
+                        <!-- Dropdown Card Example -->
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                              <h6 class="m-0 font-weight-bold"><span class="text-warning"><?php if ($note['favorite'] == 0) { echo '<i class="far fa-star"></i>'; } else { echo '<i class="fas fa-star"></i>'; } ?></span> <span class="text-primary"><?php echo $note['title'] ?></span></h6>
+                              <div class="dropdown no-arrow">
+                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                                  <form action="" method="post">
+                                    <input type="hidden" name="updateId" value="<?php echo $note['id'] ?>">
+                                    <button type="submit" class="dropdown-item" name="updateSubmit">Modifier</button>
+                                  </form>
+                                  <form action="" method="post">
+                                    <input type="hidden" name="deleteId" value="<?php echo $note['id'] ?>">
+                                    <button type="submit" class="dropdown-item" name="deleteSubmit">Supprimer</button>
+                                  </form>
+                                  <div class="dropdown-divider"></div>
+                                  <form action="favorite-processing.php" method="post">
+                                    <input type="hidden" name="favoriteId" value="<?php echo $note['id'] ?>">
+                                  <?php
+                                  if ($note['favorite'] == FALSE) {
+                                    ?>
+                                    <button type="submit" class="dropdown-item" name="addFavoriteSubmit">Ajouter aux favoris</button>
+                                    <?php
+                                  }
+                                  else {
+                                    ?>
+                                    <button type="submit" class="dropdown-item" name="removeFavoriteSubmit">Enlever des favoris</button>
+                                    <?php
+                                  }
+                                  ?>
+                                  </form>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body">
+                              <div class="row">
+                                <div class="col-lg-<?php if (!empty($note['illustration'])) { if (strlen($note['description']) < 750) { echo "8"; } else { echo "12"; } } else { echo "12"; } ?> mb-3">
+                                  <?php echo nl2br(htmlspecialchars($note['description'])); ?>
+                                </div>
+                                <?php if (!empty($note['illustration'])) { ?>
+                                <div class="col-lg-<?php if (!empty($note['illustration'])) { if (strlen($note['description']) < 750) { echo "4"; } else { echo "12"; } } else { echo "12"; } ?> d-flex justify-content-center align-items-center">
+                                  <img class="img-fluid rounded" src="/img/notes/<?php echo $note['illustration'] ?>" style="max-height: 15rem;">
+                                </div>
+                                <?php } ?>
+                              </div>
+                            </div>
+
+                            <!-- Card Footer -->
+                            <div class="card-footer"><span class="text-primary float-right"><?php echo date("d/m/Y", strtotime($note['dateNotes']));?></span></div>
+
+                        </div>
+                        <?php
+                      }
+                      $req->closeCursor();
+                      ?>
+                        </div>
+                        <div class="col-lg-4 border">
+                          <h2>En cours</h2>
+                        </div>
+                        <div class="col-lg-4 border">
+                          <h1>Terminer</h1>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
                   <ul class="list-group">
 
