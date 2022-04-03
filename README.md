@@ -26,5 +26,5 @@ Une fois le compte créé vous pouvez vous connecter afin d'accéder à votre ta
 
 Dans le menu de navigation du tableau de bord, seul l'onglet "Organisations" fonctionne à ce jour.
 
-Vous pouvez ainsi exploiter une To Do List,  
+Vous pouvez ainsi exploiter une To Do List sous forme de kanban,  
 ainsi qu'un système de création de cartes trié par date dans l'ordre décroissant.
